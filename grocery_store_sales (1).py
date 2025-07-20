@@ -12,7 +12,9 @@ import numpy as np                   # For numerical operations
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
-import pickle                        # For saving the model
+import pickle     # For saving the model       
+import pandas as pd
+import os            
 
 df = pd.read_csv("Stores.csv")
 
@@ -32,6 +34,43 @@ print(model.predict(X_train[:5]))  # Should show varying predictions
 
 y_pred = model.predict(X_test)
 rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+
+
+store_area = int(input("Enter The Store Area : "))
+items_available = int(input("Enter The items_available : "))
+daily_customer_count = int(input("Enter The daily_customer_count : "))
+
+input_data = np.array([[store_area, items_available, daily_customer_count]])
+prediction = model.predict(input_data)[0]
+print(f"Predected Sales Number : {int(prediction)}")
+
+# Store input and prediction in a DataFrame
+result_row = pd.DataFrame({
+    'Store_Area': [store_area],
+    'Items_Available': [items_available],
+    'Daily_Customer_Count': [daily_customer_count],
+    'Predicted_Sales': [prediction]
+})
+
+
+
+filename = input("Enter the User FileName with 📌 .csv extension : ")
+
+if not  filename.lower().endswith('.csv'):
+    print("✅ It is not a CSV file.")
+    
+else: 
+    # If file exists, append; else create new with header
+    if os.path.exists(filename):
+        result_row.to_csv(filename, mode='a', header=False, index=False)
+    else:
+        result_row.to_csv(filename, mode='w', header=True, index=False)
+
+
+
+
+
+
 # print("Root Mean Squared Error:", rmse)
 
 # feature = X.columns
