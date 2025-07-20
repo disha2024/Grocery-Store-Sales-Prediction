@@ -12,7 +12,7 @@ st.title("🛒 Grocery Store Sales Predictor")
 
 # Upload CSV file
 #uploaded_file = st.file_uploader("Upload your dataset (.csv)", type=["csv"])
-df = pd.read_csv("stores.csv")
+df = pd.read_csv("Stores.csv")
 if df is not None:
     
 
